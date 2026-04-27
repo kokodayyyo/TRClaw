@@ -285,7 +285,11 @@ class MemoryIndexRepository:
     def _rank_candidates(self, *, candidates: list[dict], query: str, top_k: int) -> list[SearchResult]:
         prepared = _prepare_query(query)
         if not prepared["normalized"]:
-            ranked = [SearchResult(score=float(candidate.get("score", 0.0)), **candidate) for candidate in candidates]
+            ranked = []
+            for candidate in candidates:
+                payload = dict(candidate)
+                payload["score"] = float(candidate.get("score", 0.0))
+                ranked.append(SearchResult(**payload))
             ranked.sort(key=lambda item: item.created_at, reverse=True)
             return ranked[:top_k]
 
@@ -294,7 +298,9 @@ class MemoryIndexRepository:
             score = _score_candidate(candidate, prepared)
             if score <= 0:
                 continue
-            rows.append(SearchResult(score=score, **candidate))
+            payload = dict(candidate)
+            payload["score"] = score
+            rows.append(SearchResult(**payload))
 
         rows.sort(
             key=lambda item: (

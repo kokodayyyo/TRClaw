@@ -1,0 +1,71 @@
+app:
+  name: TRlaw
+  debug: false
+  timezone: Asia/Shanghai
+
+runtime:
+  max_subagents: 10
+  main_agent_max_loops: 8
+  subagent_max_loops: 8
+  task_loop_budget: 24
+  task_max_runtime_seconds: 900
+  default_channel: cli
+  auto_create_session: true
+  write_summary_after_memory_save: true
+  kill_subagents_on_new: true
+  graceful_exit_flush: true
+
+paths:
+  memory_root: ./memory
+  submemory_root: ./submemory
+  agents_root: ./agents
+  skills_root: ./skills
+  data_root: ./data
+  logs_root: ./logs
+
+retrieval:
+  backend: sqlite_fts5
+  top_k: 5
+  auto_retry_with_rewritten_keywords: true
+  summary_heading: "# Summary"
+
+commands:
+  new: /new
+  agents: /agents
+  remember: /remember-
+  callmemory: /callmemory-
+  tasks: /tasks
+  task_run: /task run
+  task_show: /task show
+  task_resume: /task resume
+  kill_subagents: /kill subagents
+  memory_search: /memory search
+  submemory_search: /submemory search
+  confirm_delete: /confirm delete
+  exit: /exit
+
+channel:
+  cli:
+    enabled: true
+  qq:
+    enabled: false
+    adapter: onebot
+    ws_url: ""
+    access_token: ""
+
+memory:
+  file_name_format: "%Y-%m-%d_%H-%M-%S"
+  source_values:
+    - cli
+    - qq
+  type_values:
+    - conversation
+    - long_output
+    - task_result
+
+execution:
+  mode: local
+  local_only: true
+  target_platform: linux
+  shell_executable: bash
+  python_executable: current

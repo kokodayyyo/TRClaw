@@ -1,0 +1,28 @@
+default_profile: V4F
+
+profiles:
+  default:
+    base_url: "http://192.168.137.1:1234/v1"
+    api_key: "lm-studio"
+    model: "gemma_un"
+    timeout: 120
+    temperature: 0.2
+    max_tokens: null
+    reasoning_effort: "high"
+    thinking:
+      type: "enabled"
+    extra_headers: {}
+    extra_body: {}
+  
+  V4F:
+    base_url: "https://api.deepseek.com"
+    api_key: ""
+    model: "deepseek-v4-flash"
+    timeout: 120
+    temperature: 0.6
+    max_tokens: null
+    reasoning_effort: "high"
+    thinking:
+      type: "enabled"
+    extra_headers: {}
+    extra_body: {}
